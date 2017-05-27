@@ -1,0 +1,23 @@
+Office:
+https://console.cloud.google.com/storage/browser/
+
+Add setting activity --- Working
+	Automatically switch to night mode
+	Remove Ads
+	Remind me to read
+		enable reminder
+		daily, weekly
+		day
+		time
+		ringtone
+		ringtone on silent mode
+	About me
+		Contact me
+		Rate the app on Playstore
+		About me
+		
+Add tick mark on grid --- Working
+Add greendao db 
+add admob banner ad 
+add themes
+minify enabled

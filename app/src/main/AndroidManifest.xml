@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.omkarnagare.programminginterviewprepguide">
+    package="com.nagare.balkrishna.omkar.programminginterviewprepguide">
 
     <application
-        android:name=".Application.ProgrammingInterviewPrepGuideApp"
+        android:name="com.nagare.balkrishna.omkar.programminginterviewprepguide.Application.ProgrammingInterviewPrepGuideApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activity.MainActivity"
+            android:name="com.nagare.balkrishna.omkar.programminginterviewprepguide.Activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.SettingsActivity"></activity>
+        <activity android:name="com.nagare.balkrishna.omkar.programminginterviewprepguide.Activity.SettingsActivity"></activity>
     </application>
 
 </manifest>

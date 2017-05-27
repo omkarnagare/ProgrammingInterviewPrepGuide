@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.omkarnagare.programminginterviewprepguide.Activity.MainActivity">
+    tools:context="com.nagare.balkrishna.omkar.programminginterviewprepguide.Activity.MainActivity">
     <item
         android:id="@+id/action_themes"
         android:orderInCategory="100"

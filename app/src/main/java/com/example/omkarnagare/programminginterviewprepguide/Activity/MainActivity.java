@@ -1,16 +1,20 @@
 package com.example.omkarnagare.programminginterviewprepguide.Activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.example.omkarnagare.programminginterviewprepguide.Application.ProgrammingInterviewPrepGuideApp;
 import com.example.omkarnagare.programminginterviewprepguide.Model.ThemeItem;
@@ -20,8 +24,11 @@ import com.example.omkarnagare.programminginterviewprepguide.Utils.Constants;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
+
     private Toolbar mToolbar = null;
     private int mThemeId = -1;
+    private TextView settingsTextView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         setThemeBasedOnPreferences();
 
         setContentView(R.layout.activity_main);
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         setUpUIComponents();
 
@@ -40,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
+        settingsTextView = (TextView) findViewById(R.id.settingsContent);
+
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -49,12 +60,34 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
+        readSharedPreferences();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        readSharedPreferences();
+    }
+
+    private void readSharedPreferences() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("\n" + "Perform Sync:\t" + sharedPrefs.getBoolean("perform_sync", false));
+        builder.append("\n" + "Sync Intervals:\t" + sharedPrefs.getString("sync_interval", "-1"));
+        builder.append("\n" + "Name:\t" + sharedPrefs.getString("full_name", "Not known to us"));
+        builder.append("\n" + "Email Address:\t" + sharedPrefs.getString("email_address", "No EMail Address Provided"));
+        builder.append("\n" + "Customized Notification Ringtone:\t" + sharedPrefs.getString("notification_ringtone", ""));
+        builder.append("\n\nClick on Settings Button at bottom right corner to Modify Your Prefrences");
+
+        settingsTextView.setText(builder.toString());
     }
 
     private void setThemeBasedOnPreferences() {
 
         SharedPreferences pref = ProgrammingInterviewPrepGuideApp.getSharedPreferences();
-        if(pref.contains(Constants.PREF_THEME_ID)){
+        if (pref.contains(Constants.PREF_THEME_ID)) {
             mThemeId = pref.getInt(Constants.PREF_THEME_ID, 0);
             setTheme(mThemeId);
         }
@@ -75,15 +108,26 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        switch (id) {
 
-            chooseThemeColor();
-
-            return true;
+            case R.id.action_settings:
+                startSettingsActivity();
+                break;
+            case R.id.action_themes:
+                chooseThemeColor();
+                break;
+            default:
+                Log.d(TAG, "onOptionsItemSelected: No action defined");
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startSettingsActivity() {
+
+        Intent modifySettings = new Intent(MainActivity.this,SettingsActivity.class);
+        startActivity(modifySettings);
+
     }
 
     private void chooseThemeColor() {

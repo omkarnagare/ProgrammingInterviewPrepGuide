@@ -18,16 +18,6 @@ public class ThemeItem {
 
     private int themeId;
 
-    private boolean isSelected;
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
-    }
-
     public int getColor() {
         return color;
     }
@@ -42,5 +32,29 @@ public class ThemeItem {
 
     public void setThemeId(int themeId) {
         this.themeId = themeId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ThemeItem themeItem = (ThemeItem) o;
+
+        return themeId == themeItem.themeId;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return themeId;
+    }
+
+    @Override
+    public String toString() {
+        return "ThemeItem{" +
+                "color=" + color +
+                ", themeId=" + themeId +
+                '}';
     }
 }

@@ -3,35 +3,33 @@ package com.nagare.balkrishna.omkar.programminginterviewprepguide.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Application.ProgrammingInterviewPrepGuideApp;
-import com.nagare.balkrishna.omkar.programminginterviewprepguide.Model.ThemeItem;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.R;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Utils.ColorPickerUtils;
-import com.nagare.balkrishna.omkar.programminginterviewprepguide.Utils.Constants;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
     private Toolbar mToolbar = null;
-    private int mThemeId = -1;
     private TextView settingsTextView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         ProgrammingInterviewPrepGuideApp.setThemeBasedOnPreferences(this);
@@ -115,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startSettingsActivity() {
 
-        Intent modifySettings = new Intent(MainActivity.this,SettingsActivity.class);
+        Intent modifySettings = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(modifySettings);
 
     }
@@ -123,50 +121,34 @@ public class MainActivity extends AppCompatActivity {
     private void chooseThemeColor() {
 
         // Get a GridView object from ColorPicker class
-        GridView gv = (GridView) ColorPickerUtils.getColorPicker(MainActivity.this);
+        final GridView gridView = (GridView) ColorPickerUtils.getColorPicker(MainActivity.this);
+
+        TextView title = new TextView(this);
+        // You Can Customise your Title here
+        title.setText("Choose Theme Color");
+        title.setBackgroundColor(Color.TRANSPARENT);
+        title.setTextColor(Color.BLACK);
+        title.setPadding(10, 20, 10, 10);
+        title.setGravity(Gravity.CENTER);
+        title.setTextSize(20);
 
         // Initialize a new AlertDialog.Builder object
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-
-        // Set the alert dialog content to GridView (color picker)
-        builder.setView(gv);
-
-        builder.setTitle("Choose Theme Color");
-
-        builder.setCancelable(false);
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
+                .setView(gridView)
+                .setCustomTitle(title)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
 
         // Initialize a new AlertDialog object
         final AlertDialog dialog = builder.create();
-
         // Show the color picker window
         dialog.show();
-        // Set an item click listener for GridView widget
-        gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                // Get the pickedColor from AdapterView
-                ThemeItem theme = (ThemeItem) parent.getItemAtPosition(position);
-                mThemeId = theme.getThemeId();
-                setTheme(mThemeId);
-
-                SharedPreferences.Editor editor = ProgrammingInterviewPrepGuideApp.getSharedPreferencesEditor();
-                editor.putInt(Constants.PREF_THEME_ID, mThemeId);
-                editor.commit();
-
-                // Set the layout background color as picked color
-//                mToolbar.setBackgroundColor(mThemeId);
-                MainActivity.this.recreate();
-
-            }
-        });
 
     }
+
 }

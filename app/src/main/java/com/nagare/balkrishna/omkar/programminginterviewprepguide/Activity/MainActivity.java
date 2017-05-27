@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        PreferenceManager.setDefaultValues(this, R.xml.pref_data_sync, false);
+        PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
+        PreferenceManager.setDefaultValues(this, R.xml.pref_notification, false);
 
         setUpUIComponents();
 

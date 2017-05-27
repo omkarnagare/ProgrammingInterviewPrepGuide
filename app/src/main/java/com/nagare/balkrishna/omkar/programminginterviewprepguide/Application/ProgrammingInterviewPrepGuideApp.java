@@ -1,9 +1,11 @@
 package com.nagare.balkrishna.omkar.programminginterviewprepguide.Application;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.nagare.balkrishna.omkar.programminginterviewprepguide.R;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Utils.Constants;
 
 /**
@@ -44,4 +46,17 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
     public void setmSharedPreferences(SharedPreferences mSharedPreferences) {
         this.mSharedPreferences = mSharedPreferences;
     }
+
+    public static void setThemeBasedOnPreferences(Activity activity) {
+
+        SharedPreferences pref = ProgrammingInterviewPrepGuideApp.getSharedPreferences();
+        if (pref.contains(Constants.PREF_THEME_ID)) {
+            int mThemeId = pref.getInt(Constants.PREF_THEME_ID, 0);
+            activity.setTheme(mThemeId);
+        }else{
+            activity.setTheme(R.style.AppTheme);
+        }
+
+    }
+
 }

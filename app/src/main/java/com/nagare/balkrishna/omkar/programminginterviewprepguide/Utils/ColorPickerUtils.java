@@ -45,7 +45,7 @@ public class ColorPickerUtils {
         gv.setVerticalSpacing(Constants.GRID_SPACING);
         gv.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
         gv.setBackgroundColor(Color.TRANSPARENT);
-        gv.setPadding(Constants.GRID_PADDING, Constants.GRID_PADDING, Constants.GRID_PADDING, Constants.GRID_PADDING);
+        gv.setPadding(Constants.GRID_HORIZONTAL_PADDING, Constants.GRID_VERTICAL_PADDING, Constants.GRID_HORIZONTAL_PADDING, Constants.GRID_VERTICAL_PADDING);
         gv.setGravity(Gravity.CENTER);
         // Get the ArrayList of HSV colors
 //        final ArrayList themes = HSVColors();
@@ -101,11 +101,32 @@ public class ColorPickerUtils {
 
         ArrayList<ThemeItem> themes = new ArrayList<>();
 
-        ThemeItem yellowTheme = new ThemeItem(Color.YELLOW, R.style.Yellow);
-        themes.add(yellowTheme);
+        ThemeItem redTheme = new ThemeItem(Color.parseColor("#F44336"), R.style.AppTheme_Red);
+        themes.add(redTheme);
 
-        ThemeItem greenTheme = new ThemeItem(Color.GREEN, R.style.Green);
+        ThemeItem greenTheme = new ThemeItem(Color.parseColor("#4CAF50"), R.style.AppTheme_Green);
         themes.add(greenTheme);
+
+        ThemeItem orangeTheme = new ThemeItem(Color.parseColor("#FFA500"), R.style.AppTheme_Orange);
+        themes.add(orangeTheme);
+
+        ThemeItem limeTheme = new ThemeItem(Color.parseColor("#CDDC39"), R.style.AppTheme_Lime);
+        themes.add(limeTheme);
+
+        ThemeItem tealTheme = new ThemeItem(Color.parseColor("#009688"), R.style.AppTheme_Teal);
+        themes.add(tealTheme);
+
+        ThemeItem blueTheme = new ThemeItem(Color.parseColor("#2196F3"), R.style.AppTheme_Blue);
+        themes.add(blueTheme);
+
+        ThemeItem purpleTheme = new ThemeItem(Color.parseColor("#9C27B0"), R.style.AppTheme_Purple);
+        themes.add(purpleTheme);
+
+        ThemeItem grayTheme = new ThemeItem(Color.parseColor("#9E9E9E"), R.style.AppTheme_Gray);
+        themes.add(grayTheme);
+
+        ThemeItem defaultTheme = new ThemeItem(Color.BLACK, R.style.AppTheme);
+        themes.add(defaultTheme);
 
         return themes;
     }

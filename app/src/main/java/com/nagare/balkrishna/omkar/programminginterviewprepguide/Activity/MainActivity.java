@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setThemeBasedOnPreferences();
+        ProgrammingInterviewPrepGuideApp.setThemeBasedOnPreferences(this);
 
         setContentView(R.layout.activity_main);
 
@@ -82,16 +82,6 @@ public class MainActivity extends AppCompatActivity {
         builder.append("\n\nClick on Settings Button at bottom right corner to Modify Your Prefrences");
 
         settingsTextView.setText(builder.toString());
-    }
-
-    private void setThemeBasedOnPreferences() {
-
-        SharedPreferences pref = ProgrammingInterviewPrepGuideApp.getSharedPreferences();
-        if (pref.contains(Constants.PREF_THEME_ID)) {
-            mThemeId = pref.getInt(Constants.PREF_THEME_ID, 0);
-            setTheme(mThemeId);
-        }
-
     }
 
     @Override

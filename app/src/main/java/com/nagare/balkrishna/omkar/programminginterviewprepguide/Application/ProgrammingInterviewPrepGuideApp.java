@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
+import com.nagare.balkrishna.omkar.programminginterviewprepguide.Activity.MainActivity;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Activity.SettingsActivity;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Model.NightModeTimings;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Model.ReminderTiming;
@@ -130,6 +131,7 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
 
         reminderTiming.setHour(mSharedPreferences.getInt(Constants.PREF_REMINDER_START_HOUR, 20));
         reminderTiming.setMinute(mSharedPreferences.getInt(Constants.PREF_REMINDER_START_MINUTE, 0));
+        reminderTiming.setEnabled(getBooleanSetting(SettingsActivity.KEY_ENABLE_REMINDER));
 
         return reminderTiming;
     }
@@ -170,6 +172,16 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
     public static void showToast(String message) {
 
         Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+
+    }
+
+    public static void setReminderBasedOnPreference(MainActivity mainActivity){
+
+        ReminderTiming reminderTiming = ProgrammingInterviewPrepGuideApp.getReminderTiming();
+
+        if(reminderTiming.isEnabled()) {
+
+        }
 
     }
 }

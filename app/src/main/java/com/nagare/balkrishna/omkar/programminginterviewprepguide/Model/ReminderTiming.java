@@ -9,6 +9,16 @@ public class ReminderTiming {
     private int hour;
     private int minute;
 
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    private boolean isEnabled;
+
     public int getMinute() {
         return minute;
     }

@@ -62,6 +62,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        ProgrammingInterviewPrepGuideApp.changeDayNightModeFromPreferences(this);
         setupActionBar();
     }
 
@@ -214,9 +215,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         private void showTimePickerForNightModeTimings() {
 
             // Get Current Time
-            final Calendar c = Calendar.getInstance();
-            int mHour = c.get(Calendar.HOUR_OF_DAY);
-            int mMinute = c.get(Calendar.MINUTE);
+            final Calendar calender = Calendar.getInstance();
+            int mHour = calender.get(Calendar.HOUR_OF_DAY);
+            int mMinute = calender.get(Calendar.MINUTE);
 
             final TextView titleFrom = new TextView(getActivity());
             // You Can Customise your Title here
@@ -379,6 +380,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         } else {
                             checkBoxPreference.setSummary("Enable Night Mode");
                         }
+                        ProgrammingInterviewPrepGuideApp.changeDayNightModeFromPreferences(getActivity());
                         break;
 
                     case KEY_ENABLE_AUTO_NIGHT_MODE:
@@ -388,7 +390,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         } else {
                             checkBoxPreference.setSummary("Enable Auto Night Mode");
                         }
-
+                        ProgrammingInterviewPrepGuideApp.changeDayNightModeFromPreferences(getActivity());
                         break;
 
                     case KEY_ENABLE_REMINDER:
@@ -425,8 +427,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                         preference.setSummary("From " + startHour + ":" + startMinute + " " + startAMPM
                                 + " To " + endHour + ":" + endMinute + " " + endAMPM);
-
-
+                        ProgrammingInterviewPrepGuideApp.changeDayNightModeFromPreferences(getActivity());
                         break;
 
                     case KEY_REMINDER_TIMINGS:

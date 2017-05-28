@@ -15,6 +15,8 @@ import com.nagare.balkrishna.omkar.programminginterviewprepguide.Model.ReminderT
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.R;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Utils.Constants;
 
+import java.util.Calendar;
+
 /**
  * Created by OMKARNAGARE on 5/26/2017.
  */
@@ -80,13 +82,35 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
     public static void changeDayNightModeFromPreferences(Activity activity) {
 
         boolean isNightMode = ProgrammingInterviewPrepGuideApp.getBooleanSetting(SettingsActivity.KEY_ENABLE_NIGHT_MODE);
+        boolean isNightTime = ProgrammingInterviewPrepGuideApp.isNightTime();
         View view = activity.getWindow().getDecorView();
-        if(isNightMode){
+        if(isNightMode || isNightTime){
             view.setBackgroundColor(Color.GRAY);
         }else{
             view.setBackgroundColor(Color.WHITE);
         }
 
+    }
+
+    private static boolean isNightTime() {
+
+        NightModeTimings nightModeTimings = ProgrammingInterviewPrepGuideApp.getNightModeTimings();
+        // Get Current Time
+        Calendar calendar = Calendar.getInstance();
+        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int mMinute = calendar.get(Calendar.MINUTE);
+
+        if(nightModeTimings.isEnabled()) {
+
+            int from = nightModeTimings.getStartHour()*100 + nightModeTimings.getStartMinute();
+            int to = nightModeTimings.getEndHour()*100 + nightModeTimings.getEndMinute();
+
+            int t = mHour*100 + mMinute;
+
+            return (to > from && t >= from && t <= to || to < from && (t >= from || t <= to));
+
+        }
+        return false;
     }
 
     public static String getStringSetting(String key){
@@ -117,6 +141,7 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
         nightModeTimings.setStartMinute(mSharedPreferences.getInt(Constants.PREF_NIGHT_MODE_START_MINUTE, 0));
         nightModeTimings.setEndHour(mSharedPreferences.getInt(Constants.PREF_NIGHT_MODE_END_HOUR, 8));
         nightModeTimings.setEndMinute(mSharedPreferences.getInt(Constants.PREF_NIGHT_MODE_END_MINUTE, 0));
+        nightModeTimings.setEnabled(getBooleanSetting(SettingsActivity.KEY_ENABLE_AUTO_NIGHT_MODE));
 
         return nightModeTimings;
     }

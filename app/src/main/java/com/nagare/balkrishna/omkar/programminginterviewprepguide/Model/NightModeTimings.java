@@ -6,10 +6,19 @@ package com.nagare.balkrishna.omkar.programminginterviewprepguide.Model;
 
 public class NightModeTimings {
 
+    private boolean isEnabled;
     private int startHour;
     private int startMinute;
     private int endHour;
     private int endMinute;
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
 
     public int getStartHour() {
         return startHour;
@@ -41,5 +50,15 @@ public class NightModeTimings {
 
     public void setEndMinute(int endMinute) {
         this.endMinute = endMinute;
+    }
+
+    @Override
+    public String toString() {
+        return "NightModeTimings{" +
+                "startHour=" + startHour +
+                ", startMinute=" + startMinute +
+                ", endHour=" + endHour +
+                ", endMinute=" + endMinute +
+                '}';
     }
 }

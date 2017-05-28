@@ -2,4 +2,24 @@
     <string name="app_name">Programming Interview Prep Guide</string>
     <string name="action_settings">Settings</string>
     <string name="themes">Themes</string>
+    <string name="feedback_header">Give Feedback</string>
+    <string name="feedback_description">Send your queries and feedback to omtechnologies.apps@gmail.com</string>
+    <string name="key_send_us_feedback">send_us_feedback</string>
+    <string name="key_rate_app">rate_app</string>
+    <string name="rate_us_header">Rate us</string>
+    <string name="key_about_me">about_me</string>
+    <string name="about_me_header">About Me</string>
+    <string name="key_enable_night_mode">enable_night_mode</string>
+    <string name="key_enable_auto_night_mode">enable_auto_night_mode</string>
+    <string name="key_auto_night_mode_timings">auto_night_mode_timings</string>
+    <string name="enable_night_mode_description">Activate Night mode</string>
+    <string name="enable_night_mode_header">Night Mode</string>
+    <string name="enable_auto_night_mode_description">Enable Auto Night Mode</string>
+    <string name="enable_auto_night_mode_header">Auto Night Mode</string>
+    <string name="auto_night_mode_timings_header">Night Mode Activation Timings</string>
+    <string name="key_enable_reminder">enable_reminder</string>
+    <string name="enable_reminder_description">Remind me everyday to read questions</string>
+    <string name="enable_reminder_header">Reminder</string>
+    <string name="key_reminder_timings">reminder_timings</string>
+    <string name="reminder_timings_header">Reminder Timings</string>
 </resources>

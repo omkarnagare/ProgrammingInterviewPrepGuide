@@ -18,9 +18,9 @@
 
     <header
         android:fragment="com.nagare.balkrishna.omkar.programminginterviewprepguide.Activity.SettingsActivity$GeneralPreferenceFragment"
-        android:icon="@drawable/ic_sync_black_24dp"
-        android:title="Data &amp; Sync" >
-        <extra android:name="settings" android:value="prefs_sync" ></extra>
+        android:icon="@drawable/ic_account_circle_black_24dp"
+        android:title="About me" >
+        <extra android:name="settings" android:value="prefs_about_me" ></extra>
     </header>
 
 </preference-headers>

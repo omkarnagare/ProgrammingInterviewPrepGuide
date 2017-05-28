@@ -9,14 +9,25 @@ public class ThemeItem {
     public ThemeItem() {
     }
 
-    public ThemeItem(int color, int themeId) {
+    public ThemeItem(int color, int themeId, int timePickerThemeId) {
         this.color = color;
         this.themeId = themeId;
+        this.timePickerThemeId = timePickerThemeId;
     }
 
     private int color;
 
     private int themeId;
+
+    private int timePickerThemeId;
+
+    public int getTimePickerThemeId() {
+        return timePickerThemeId;
+    }
+
+    public void setTimePickerThemeId(int timePickerThemeId) {
+        this.timePickerThemeId = timePickerThemeId;
+    }
 
     public int getColor() {
         return color;
@@ -55,6 +66,7 @@ public class ThemeItem {
         return "ThemeItem{" +
                 "color=" + color +
                 ", themeId=" + themeId +
+                ", timePickerThemeId=" + timePickerThemeId +
                 '}';
     }
 }

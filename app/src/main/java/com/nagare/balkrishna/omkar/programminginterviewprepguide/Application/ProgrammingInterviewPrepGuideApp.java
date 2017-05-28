@@ -4,7 +4,14 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.Toast;
 
+import com.nagare.balkrishna.omkar.programminginterviewprepguide.Activity.SettingsActivity;
+import com.nagare.balkrishna.omkar.programminginterviewprepguide.Model.NightModeTimings;
+import com.nagare.balkrishna.omkar.programminginterviewprepguide.Model.ReminderTiming;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.R;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Utils.Constants;
 
@@ -16,7 +23,8 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
 
     private static Context mContext = null;
     private static SharedPreferences mSharedPreferences = null;
-    private static final String TAG = "ProgrammingInterviewPrepGuideApp";
+    private static SharedPreferences mSettingPreferences = null;
+    private static final String TAG = "ProgrammingInterviewApp";
 
     @Override
     public void onCreate() {
@@ -24,7 +32,7 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
 
         mContext = getApplicationContext();
         mSharedPreferences = mContext.getSharedPreferences(Constants.PROGRAMMING_INTERVIEW_PREP_GUIDE_APP_PREF, MODE_PRIVATE);
-
+        mSettingPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     public static Context getAppContext() {
@@ -49,14 +57,94 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
 
     public static void setThemeBasedOnPreferences(Activity activity) {
 
-        SharedPreferences pref = ProgrammingInterviewPrepGuideApp.getSharedPreferences();
-        if (pref.contains(Constants.PREF_THEME_ID)) {
-            int mThemeId = pref.getInt(Constants.PREF_THEME_ID, 0);
+        if (mSharedPreferences.contains(Constants.PREF_THEME_ID)) {
+            int mThemeId = mSharedPreferences.getInt(Constants.PREF_THEME_ID, 0);
             activity.setTheme(mThemeId);
         }else{
-            activity.setTheme(R.style.AppTheme);
+            activity.setTheme(R.style.AppTheme_Default);
         }
 
     }
 
+    public static int getTimePickerThemeBasedOnPreferences() {
+
+        int mTimePickerThemeId;
+        if (mSharedPreferences.contains(Constants.PREF_TIME_PICKER_THEME_ID)) {
+             mTimePickerThemeId = mSharedPreferences.getInt(Constants.PREF_TIME_PICKER_THEME_ID, 0);
+        }else{
+            mTimePickerThemeId = R.style.AppTheme_Dialog_Alert_Default;
+        }
+        return mTimePickerThemeId;
+    }
+
+    public static void changeDayNightModeFromPreferences(Activity activity) {
+
+        boolean isNightMode = ProgrammingInterviewPrepGuideApp.getBooleanSetting(SettingsActivity.KEY_ENABLE_NIGHT_MODE);
+        View view = activity.getWindow().getDecorView();
+        if(isNightMode){
+            view.setBackgroundColor(Color.GRAY);
+        }else{
+            view.setBackgroundColor(Color.WHITE);
+        }
+
+    }
+
+    public static String getStringSetting(String key){
+        return  mSettingPreferences.getString(key, SettingsActivity.NO_SUCH_KEY_FOR_STRING);
+    }
+
+    public static int getIntSetting(String key){
+        return  mSettingPreferences.getInt(key, SettingsActivity.NO_SUCH_KEY_FOR_INT);
+    }
+
+    public static boolean getBooleanSetting(String key){
+        return  mSettingPreferences.getBoolean(key, SettingsActivity.NO_SUCH_KEY_FOR_BOOLEAN);
+    }
+
+    public static ReminderTiming getReminderTiming() {
+        ReminderTiming reminderTiming = new ReminderTiming();
+
+        reminderTiming.setHour(mSharedPreferences.getInt(Constants.PREF_REMINDER_START_HOUR, 20));
+        reminderTiming.setMinute(mSharedPreferences.getInt(Constants.PREF_REMINDER_START_MINUTE, 0));
+
+        return reminderTiming;
+    }
+
+    public static NightModeTimings getNightModeTimings() {
+        NightModeTimings nightModeTimings = new NightModeTimings();
+
+        nightModeTimings.setStartHour(mSharedPreferences.getInt(Constants.PREF_NIGHT_MODE_START_HOUR, 21));
+        nightModeTimings.setStartMinute(mSharedPreferences.getInt(Constants.PREF_NIGHT_MODE_START_MINUTE, 0));
+        nightModeTimings.setEndHour(mSharedPreferences.getInt(Constants.PREF_NIGHT_MODE_END_HOUR, 8));
+        nightModeTimings.setEndMinute(mSharedPreferences.getInt(Constants.PREF_NIGHT_MODE_END_MINUTE, 0));
+
+        return nightModeTimings;
+    }
+
+    public static void setReminderTimings(ReminderTiming reminderTiming) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+
+        editor.putInt(Constants.PREF_REMINDER_START_HOUR, reminderTiming.getHour());
+        editor.putInt(Constants.PREF_REMINDER_START_MINUTE, reminderTiming.getMinute());
+
+        editor.commit();
+    }
+
+    public static void setNightModeTimings(NightModeTimings nightModeTimings) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+
+        editor.putInt(Constants.PREF_NIGHT_MODE_START_HOUR, nightModeTimings.getStartHour());
+        editor.putInt(Constants.PREF_NIGHT_MODE_START_MINUTE, nightModeTimings.getStartMinute());
+        editor.putInt(Constants.PREF_NIGHT_MODE_END_HOUR, nightModeTimings.getEndHour());
+        editor.putInt(Constants.PREF_NIGHT_MODE_END_MINUTE, nightModeTimings.getEndMinute());
+
+        editor.commit();
+    }
+
+
+    public static void showToast(String message) {
+
+        Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+
+    }
 }

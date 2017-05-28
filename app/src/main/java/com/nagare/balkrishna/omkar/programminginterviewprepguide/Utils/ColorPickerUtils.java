@@ -63,6 +63,7 @@ public class ColorPickerUtils {
 
                 SharedPreferences.Editor editor = ProgrammingInterviewPrepGuideApp.getSharedPreferencesEditor();
                 editor.putInt(Constants.PREF_THEME_ID, theme.getThemeId());
+                editor.putInt(Constants.PREF_TIME_PICKER_THEME_ID, theme.getTimePickerThemeId());
                 editor.commit();
 
                 ProgrammingInterviewPrepGuideApp.setThemeBasedOnPreferences(activity);
@@ -82,7 +83,7 @@ public class ColorPickerUtils {
         int numberOfThemes = Constants.COLORS.length;
 
         for (int i = 0; i < numberOfThemes; i++){
-            ThemeItem themeItem = new ThemeItem(Constants.COLORS[i], Constants.THEMES[i]);
+            ThemeItem themeItem = new ThemeItem(Constants.COLORS[i], Constants.THEMES[i], Constants.TIME_PICKER_THEMES[i]);
             themes.add(themeItem);
         }
 

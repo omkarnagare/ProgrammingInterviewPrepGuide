@@ -12,6 +12,13 @@ public class Constants {
 
     public static final String PROGRAMMING_INTERVIEW_PREP_GUIDE_APP_PREF = "PROGRAMMING_INTERVIEW_PREP_GUIDE_APP_PREF";
     public static final String PREF_THEME_ID = "ThemeId";
+    public static final String PREF_TIME_PICKER_THEME_ID = "TimePickerThemeId";
+    public static final String PREF_NIGHT_MODE_START_HOUR = "NightModeStartHour";
+    public static final String PREF_NIGHT_MODE_START_MINUTE = "NightModeStartMinute";
+    public static final String PREF_NIGHT_MODE_END_HOUR = "NightModeEndHour";
+    public static final String PREF_NIGHT_MODE_END_MINUTE = "NightModeEndMinute";
+    public static final String PREF_REMINDER_START_HOUR = "ReminderStartHour";
+    public static final String PREF_REMINDER_START_MINUTE = "ReminderStartMinute";
 
     public static final int GRID_SPACING = 20;
     public static final int GRID_LEFT_PADDING = 50;
@@ -39,6 +46,17 @@ public class Constants {
             R.style.AppTheme_Blue,
             R.style.AppTheme_Purple,
             R.style.AppTheme_Gray,
-            R.style.AppTheme
+            R.style.AppTheme_Default
+    };
+
+    public static int[] TIME_PICKER_THEMES = {R.style.AppTheme_Dialog_Alert_Red,
+            R.style.AppTheme_Dialog_Alert_Green,
+            R.style.AppTheme_Dialog_Alert_Orange,
+            R.style.AppTheme_Dialog_Alert_Lime,
+            R.style.AppTheme_Dialog_Alert_Teal,
+            R.style.AppTheme_Dialog_Alert_Blue,
+            R.style.AppTheme_Dialog_Alert_Purple,
+            R.style.AppTheme_Dialog_Alert_Gray,
+            R.style.AppTheme_Dialog_Alert_Default
     };
 }

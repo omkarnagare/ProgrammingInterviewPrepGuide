@@ -4,7 +4,7 @@ https://console.cloud.google.com/storage/browser/
 Add tick mark on grid --- Not feasible
 add themes --- Done
 Add setting activity --- Working
-	Automatically switch to night mode
+	Automatically switch to night mode --- Done
 	Remove Ads
 	Remind me to read
 		enable reminder

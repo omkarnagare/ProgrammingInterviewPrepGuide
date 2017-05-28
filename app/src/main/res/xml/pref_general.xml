@@ -1,6 +1,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <EditTextPreference
+    <!--<EditTextPreference
         android:key="full_name"
         android:title="Name"
         android:summary="Enter Your Complete Name"
@@ -16,6 +16,40 @@
         android:dialogTitle="Enter Your Email Address"
         android:dialogMessage="Enter Your Email Address"
         android:defaultValue="Email"
-        android:inputType="textEmailAddress"/>
+        android:inputType="textEmailAddress"/>-->
+
+    <CheckBoxPreference
+        android:key="@string/key_enable_night_mode"
+        android:summary="@string/enable_night_mode_description"
+        android:title="@string/enable_night_mode_header"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:key="@string/key_enable_auto_night_mode"
+        android:summary="@string/enable_auto_night_mode_description"
+        android:title="@string/enable_auto_night_mode_header"
+        android:defaultValue="false"/>
+
+    <Preference
+        android:key="@string/key_auto_night_mode_timings"
+        android:title="@string/auto_night_mode_timings_header"
+        android:summary=""
+        android:dependency="enable_auto_night_mode">
+    </Preference>
+
+    <CheckBoxPreference
+        android:key="@string/key_enable_reminder"
+        android:summary="@string/enable_reminder_description"
+        android:title="@string/enable_reminder_header"
+        android:defaultValue="false"/>
+
+    <Preference
+        android:key="@string/key_reminder_timings"
+        android:title="@string/reminder_timings_header"
+        android:summary=""
+        android:dependency="enable_reminder">
+    </Preference>
+
+
 
 </PreferenceScreen>

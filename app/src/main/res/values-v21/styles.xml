@@ -18,6 +18,12 @@
         <item name="android:popupTheme">@style/AppTheme.Overlay.Light</item>
     </style>
 
+    <!-- Gray App Theme -->
+    <style name="AppTheme.Default" parent="BaseTheme.Default">
+        <!-- API specific attributes 21+ -->
+        <item name="selectableDrawableColor">@color/selector_black_pressed</item>
+    </style>
+
     <!-- Red App Theme -->
     <style name="AppTheme.Red" parent="BaseTheme.Red">
         <!-- API specific attributes 21+ -->
@@ -58,6 +64,12 @@
     <style name="AppTheme.Purple" parent="BaseTheme.Purple">
         <!-- API specific attributes 21+ -->
         <item name="selectableDrawableColor">@color/selector_purple_pressed</item>
+    </style>
+
+    <!-- Gray App Theme -->
+    <style name="AppTheme.Gray" parent="BaseTheme.Gray">
+        <!-- API specific attributes 21+ -->
+        <item name="selectableDrawableColor">@color/selector_black_pressed</item>
     </style>
 
     <!-- Button Styles -->

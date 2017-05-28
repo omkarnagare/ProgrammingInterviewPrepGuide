@@ -23,6 +23,22 @@
 
 
     <!-- Red App Theme -->
+    <style name="BaseTheme.Default" parent="AppTheme">
+        <!-- Attributes for all APIs -->
+        <item name="colorPrimary">@color/material_gray_600</item>
+        <item name="colorPrimaryDark">@color/material_gray_700</item>
+        <item name="colorAccent">@color/material_gray_700</item>
+        <item name="dialogTheme">@style/AppTheme.Dialog.Default</item>
+        <item name="alertDialogTheme">@style/AppTheme.Dialog.Alert.Default</item>
+    </style>
+
+    <style name="AppTheme.Default" parent="BaseTheme.Default">
+        <!-- API specific attributes 14+ -->
+        <item name="selectableRectDrawableColored">@drawable/state_list_selectable_rect_default</item>
+        <item name="selectableRoundedRectDrawableColored">@drawable/state_list_selectable_rounded_rect_default</item>
+    </style>
+
+    <!-- Red App Theme -->
     <style name="BaseTheme.Red" parent="AppTheme">
         <!-- Attributes for all APIs -->
         <item name="colorPrimary">@color/material_red_500</item>
@@ -151,20 +167,27 @@
         <!-- Attributes for all APIs -->
         <item name="colorPrimary">@color/material_gray_500</item>
         <item name="colorPrimaryDark">@color/material_gray_700</item>
-        <item name="colorAccent">@color/material_gray_900</item>
+        <item name="colorAccent">@color/material_gray_700</item>
         <item name="dialogTheme">@style/AppTheme.Dialog.Gray</item>
         <item name="alertDialogTheme">@style/AppTheme.Dialog.Alert.Gray</item>
     </style>
 
     <style name="AppTheme.Gray" parent="BaseTheme.Gray">
         <!-- API specific attributes 14+ -->
-        <item name="selectableRectDrawableColored">@drawable/state_list_selectable_rect_purple</item>
-        <item name="selectableRoundedRectDrawableColored">@drawable/state_list_selectable_rounded_rect_purple</item>
+        <item name="selectableRectDrawableColored">@drawable/state_list_selectable_rect_gray</item>
+        <item name="selectableRoundedRectDrawableColored">@drawable/state_list_selectable_rounded_rect_gray</item>
     </style>
 
 
     <!-- Default Dialog Theme -->
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+    </style>
+
+    <!-- Default Dialog Theme -->
+    <style name="AppTheme.Dialog.Default">
+        <item name="colorPrimary">@color/material_gray_700</item>
+        <item name="colorPrimaryDark">@color/material_gray_700</item>
+        <item name="colorAccent">@color/material_gray_700</item>
     </style>
 
     <!-- Red Dialog Theme -->
@@ -220,12 +243,19 @@
     <style name="AppTheme.Dialog.Gray">
         <item name="colorPrimary">@color/material_gray_500</item>
         <item name="colorPrimaryDark">@color/material_gray_700</item>
-        <item name="colorAccent">@color/material_gray_900</item>
+        <item name="colorAccent">@color/material_gray_700</item>
     </style>
 
 
     <!-- Default Alert Dialog Theme -->
     <style name="AppTheme.Dialog.Alert" parent="Theme.AppCompat.Light.Dialog.Alert">
+    </style>
+
+    <!-- Red Alert Dialog Theme -->
+    <style name="AppTheme.Dialog.Alert.Default">
+        <item name="colorPrimary">@color/material_gray_700</item>
+        <item name="colorPrimaryDark">@color/material_gray_700</item>
+        <item name="colorAccent">@color/material_gray_700</item>
     </style>
 
     <!-- Red Alert Dialog Theme -->
@@ -281,7 +311,7 @@
     <style name="AppTheme.Dialog.Alert.Gray">
         <item name="colorPrimary">@color/material_gray_500</item>
         <item name="colorPrimaryDark">@color/material_gray_700</item>
-        <item name="colorAccent">@color/material_gray_900</item>
+        <item name="colorAccent">@color/material_gray_700</item>
     </style>
 
 

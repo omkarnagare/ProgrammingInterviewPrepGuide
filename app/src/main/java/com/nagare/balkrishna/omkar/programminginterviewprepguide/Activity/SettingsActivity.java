@@ -400,7 +400,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         } else {
                             checkBoxPreference.setSummary("Remind me everyday to read questions");
                         }
-
+                        ProgrammingInterviewPrepGuideApp.stopNotificationService();
+                        ProgrammingInterviewPrepGuideApp.startNotificationServiceBasedOnPreference();
                         break;
                     default:
 
@@ -439,7 +440,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         String AMPM = (reminderTiming.getHour() / 12) > 0 ? "PM" : "AM";
 
                         preference.setSummary("Remind me everyday at " + hour + ":" + minute + " " + AMPM);
-
+                        ProgrammingInterviewPrepGuideApp.stopNotificationService();
+                        ProgrammingInterviewPrepGuideApp.startNotificationServiceBasedOnPreference();
                         break;
                     default:
 

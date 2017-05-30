@@ -1,15 +1,16 @@
 package com.nagare.balkrishna.omkar.programminginterviewprepguide.Application;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
-import com.nagare.balkrishna.omkar.programminginterviewprepguide.Activity.MainActivity;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Activity.SettingsActivity;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Model.NightModeTimings;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Model.ReminderTiming;
@@ -63,7 +64,7 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
         if (mSharedPreferences.contains(Constants.PREF_THEME_ID)) {
             int mThemeId = mSharedPreferences.getInt(Constants.PREF_THEME_ID, 0);
             activity.setTheme(mThemeId);
-        }else{
+        } else {
             activity.setTheme(R.style.AppTheme_Default);
         }
 
@@ -73,8 +74,8 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
 
         int mTimePickerThemeId;
         if (mSharedPreferences.contains(Constants.PREF_TIME_PICKER_THEME_ID)) {
-             mTimePickerThemeId = mSharedPreferences.getInt(Constants.PREF_TIME_PICKER_THEME_ID, 0);
-        }else{
+            mTimePickerThemeId = mSharedPreferences.getInt(Constants.PREF_TIME_PICKER_THEME_ID, 0);
+        } else {
             mTimePickerThemeId = R.style.AppTheme_Dialog_Alert_Default;
         }
         return mTimePickerThemeId;
@@ -85,9 +86,9 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
         boolean isNightMode = ProgrammingInterviewPrepGuideApp.getBooleanSetting(SettingsActivity.KEY_ENABLE_NIGHT_MODE);
         boolean isNightTime = ProgrammingInterviewPrepGuideApp.isNightTime();
         View view = activity.getWindow().getDecorView();
-        if(isNightMode || isNightTime){
+        if (isNightMode || isNightTime) {
             view.setBackgroundColor(Color.GRAY);
-        }else{
+        } else {
             view.setBackgroundColor(Color.WHITE);
         }
 
@@ -101,12 +102,12 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
         int mHour = calendar.get(Calendar.HOUR_OF_DAY);
         int mMinute = calendar.get(Calendar.MINUTE);
 
-        if(nightModeTimings.isEnabled()) {
+        if (nightModeTimings.isEnabled()) {
 
-            int from = nightModeTimings.getStartHour()*100 + nightModeTimings.getStartMinute();
-            int to = nightModeTimings.getEndHour()*100 + nightModeTimings.getEndMinute();
+            int from = nightModeTimings.getStartHour() * 100 + nightModeTimings.getStartMinute();
+            int to = nightModeTimings.getEndHour() * 100 + nightModeTimings.getEndMinute();
 
-            int t = mHour*100 + mMinute;
+            int t = mHour * 100 + mMinute;
 
             return (to > from && t >= from && t <= to || to < from && (t >= from || t <= to));
 
@@ -114,16 +115,16 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
         return false;
     }
 
-    public static String getStringSetting(String key){
-        return  mSettingPreferences.getString(key, SettingsActivity.NO_SUCH_KEY_FOR_STRING);
+    public static String getStringSetting(String key) {
+        return mSettingPreferences.getString(key, SettingsActivity.NO_SUCH_KEY_FOR_STRING);
     }
 
-    public static int getIntSetting(String key){
-        return  mSettingPreferences.getInt(key, SettingsActivity.NO_SUCH_KEY_FOR_INT);
+    public static int getIntSetting(String key) {
+        return mSettingPreferences.getInt(key, SettingsActivity.NO_SUCH_KEY_FOR_INT);
     }
 
-    public static boolean getBooleanSetting(String key){
-        return  mSettingPreferences.getBoolean(key, SettingsActivity.NO_SUCH_KEY_FOR_BOOLEAN);
+    public static boolean getBooleanSetting(String key) {
+        return mSettingPreferences.getBoolean(key, SettingsActivity.NO_SUCH_KEY_FOR_BOOLEAN);
     }
 
     public static ReminderTiming getReminderTiming() {
@@ -175,13 +176,33 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
 
     }
 
-    public static void setReminderBasedOnPreference(MainActivity mainActivity){
+    public static void startNotificationServiceBasedOnPreference() {
 
         ReminderTiming reminderTiming = ProgrammingInterviewPrepGuideApp.getReminderTiming();
+        if (reminderTiming.isEnabled()) {
 
-        if(reminderTiming.isEnabled()) {
-
+            if (!ProgrammingInterviewPrepGuideApp.isMyServiceRunning(mContext, NotificationService.class)) {
+                mContext.startService(new Intent(mContext,
+                        NotificationService.class));
+            }
         }
 
+    }
+
+    public static void stopNotificationService() {
+
+        mContext.stopService(new Intent(mContext,
+                NotificationService.class));
+
+    }
+
+    public static boolean isMyServiceRunning(Context context, Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

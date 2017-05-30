@@ -25,6 +25,9 @@ public class Constants {
     public static final int GRID_BOTTOM_PADDING = 10;
     public static final int GRID_TOP_PADDING = 30;
     public static final int GRID_RIGHT_PADDING = 50;
+    public static final long DAILY = 60 * 60 * 24;
+    public static final int REQUEST_CODE = 0;
+    public static final String  INTENT_FOR_SERVICE = "com.nagare.balkrishna.omkar.programminginterviewprepguide.notificationservice";
     public static int GRID_SIZE = 100;
 
     public static int[] COLORS = {Color.parseColor("#F44336"),

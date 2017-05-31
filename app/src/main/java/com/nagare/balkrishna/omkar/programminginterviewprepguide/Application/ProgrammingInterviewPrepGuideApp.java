@@ -178,13 +178,9 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
 
     public static void startNotificationServiceBasedOnPreference() {
 
-        ReminderTiming reminderTiming = ProgrammingInterviewPrepGuideApp.getReminderTiming();
-        if (reminderTiming.isEnabled()) {
-
-            if (!ProgrammingInterviewPrepGuideApp.isMyServiceRunning(mContext, NotificationService.class)) {
-                mContext.startService(new Intent(mContext,
-                        NotificationService.class));
-            }
+        if (!ProgrammingInterviewPrepGuideApp.isMyServiceRunning(mContext, NotificationService.class)) {
+            mContext.startService(new Intent(mContext,
+                    NotificationService.class));
         }
 
     }

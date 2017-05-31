@@ -44,39 +44,9 @@ public class NotificationService extends Service {
 
     }
 
-
-    @Override
-    public
-    void onCreate()
-    {
-        super.onCreate();
-
-
-        ReminderTiming reminderTiming = ProgrammingInterviewPrepGuideApp.getReminderTiming();
-
-        Calendar alarmStartTime    = Calendar.getInstance();
-        Calendar          now               = Calendar.getInstance();
-        alarmStartTime.set(Calendar.HOUR_OF_DAY, reminderTiming.getHour());
-        alarmStartTime.set(Calendar.MINUTE, reminderTiming.getMinute());
-        alarmStartTime.set(Calendar.SECOND, 0);
-
-        if (now.after(alarmStartTime)) {
-
-            alarmStartTime.add(Calendar.DATE, 1);
-
-        }
-
-        delay = alarmStartTime.getTimeInMillis() - System.currentTimeMillis();
-
-        runnable = new Runnable()
-        {
-            @Override
-            public
-            void run()
-            {
-                notifyLocally();
-            }
-        };
+    /*@Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
 
         if(notificationHandle != null){
 
@@ -85,13 +55,64 @@ public class NotificationService extends Service {
 
         }
 
-        if(delay < 0){
-            delay = 0;
-        }
-        Log.d(TAG, "onCreate: delay : "+ delay);
+        Intent intent =  new Intent(Constants.INTENT_FOR_SERVICE);
+        sendBroadcast(intent);
 
-        notificationHandle = scheduler.scheduleAtFixedRate(runnable, (delay/1000), Constants.DAILY,
-                TimeUnit.SECONDS);
+        Log.d(TAG, "onDestroy: broadcast sent");
+
+    }*/
+
+    @Override
+    public
+    void onCreate()
+    {
+        super.onCreate();
+
+        ReminderTiming reminderTiming = ProgrammingInterviewPrepGuideApp.getReminderTiming();
+
+        if(reminderTiming.isEnabled()) {
+
+            Calendar alarmStartTime = Calendar.getInstance();
+            Calendar now = Calendar.getInstance();
+            alarmStartTime.set(Calendar.HOUR_OF_DAY, reminderTiming.getHour());
+            alarmStartTime.set(Calendar.MINUTE, reminderTiming.getMinute());
+            alarmStartTime.set(Calendar.SECOND, 0);
+
+            if (now.after(alarmStartTime)) {
+
+                Log.d(TAG, "onCreate: Adding a day");
+                alarmStartTime.add(Calendar.DATE, 1);
+
+            }
+
+            delay = alarmStartTime.getTimeInMillis() - System.currentTimeMillis();
+
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    notifyLocally();
+                }
+            };
+
+            if (notificationHandle != null) {
+
+                notificationHandle.cancel(true);
+                notificationHandle = null;
+
+            }
+
+            if (delay < 0) {
+                delay = 0;
+            }
+            Log.d(TAG, "onCreate: delay : " + delay);
+
+            notificationHandle = scheduler.scheduleAtFixedRate(runnable, (delay / 1000), Constants.DAILY,
+                    TimeUnit.SECONDS);
+        }else{
+
+            Log.d(TAG, "onCreate: reminder is disabled");
+
+        }
     }
 
     private
@@ -109,7 +130,9 @@ public class NotificationService extends Service {
                 .setContentText("Reminder to read questions for your Preparation")
                 .setTicker("New Message Alert!")
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentIntent(pendingIntent).build();
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .build();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, notification);
@@ -126,13 +149,14 @@ public class NotificationService extends Service {
         return super.onStartCommand(intent,
                 flags,
                 startId);
+//        return START_STICKY;
     }
 
     @Override
     public
     void onDestroy()
     {
-
+        super.onDestroy();
         if(notificationHandle != null){
 
             notificationHandle.cancel(true);
@@ -143,7 +167,7 @@ public class NotificationService extends Service {
         Intent intent =  new Intent(Constants.INTENT_FOR_SERVICE);
         sendBroadcast(intent);
 
-        super.onDestroy();
+        Log.d(TAG, "onDestroy: broadcast sent");
     }
 
     @Override

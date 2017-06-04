@@ -32,6 +32,8 @@ public class Constants {
     public static final String XIAOMI = "Xiaomi";
     public static final String AUTOSTART_SETTING_PACKAGE = "com.miui.securitycenter";
     public static final String AUTOSTART_SETTING_ACTIVITY = "com.miui.permcenter.autostart.AutoStartManagementActivity";
+    public static final String TEST_DEVICE_ID = "BAEFA564A6DF839A4CFA254BBC93ACAC";
+    public static final int FULL_SCREEN_AD_INTERVAL = 5 * 60 * 1000;
     public static int GRID_SIZE = 100;
 
     public static int[] COLORS = {Color.parseColor("#F44336"),

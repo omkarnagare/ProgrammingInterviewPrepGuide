@@ -15,15 +15,29 @@ import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Application.ProgrammingInterviewPrepGuideApp;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.R;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Utils.ColorPickerUtils;
+import com.nagare.balkrishna.omkar.programminginterviewprepguide.Utils.Constants;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
     private Toolbar mToolbar = null;
+
+    private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+    private ScheduledFuture showFullScreenAdsTimer = null;
+    private InterstitialAd mInterstitialAd = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +66,90 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpUIComponents() {
 
+        setUpBannerAd();
+
+        setUpFullScreenAd();
+
+        startFullScreenAds();
+
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+    }
+
+    private void setUpFullScreenAd() {
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-8786806562583765/7156673139");
+
+        mInterstitialAd.setAdListener(new AdListener() {
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                mInterstitialAd.show();
+            }
+
+            @Override
+            public void onAdClosed() {
+            }
+        });
+
+    }
+
+    private void startFullScreenAds() {
+
+        if(showFullScreenAdsTimer != null){
+            showFullScreenAdsTimer.cancel(true);
+            showFullScreenAdsTimer = null;
+        }
+
+        showFullScreenAdsTimer = scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        AdRequest adRequest = new AdRequest.Builder()
+                                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                                .addTestDevice(Constants.TEST_DEVICE_ID)
+                                .build();
+
+                        if(mInterstitialAd != null) {
+                            mInterstitialAd.loadAd(adRequest);
+                        }
+                    }
+                });
+
+            }
+        },5 * 1000, Constants.FULL_SCREEN_AD_INTERVAL , TimeUnit.MILLISECONDS);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        if(showFullScreenAdsTimer != null){
+            showFullScreenAdsTimer.cancel(true);
+            showFullScreenAdsTimer = null;
+        }
+
+        mInterstitialAd = null;
+
+        super.onDestroy();
+    }
+
+    private void setUpBannerAd() {
+
+        AdView mAdView = (AdView) findViewById(R.id.mobile_add_main_activity);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice(Constants.TEST_DEVICE_ID)
+                .build();
+        mAdView.loadAd(adRequest);
+
+
     }
 
     @Override

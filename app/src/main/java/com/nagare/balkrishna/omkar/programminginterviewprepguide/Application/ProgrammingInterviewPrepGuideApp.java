@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Activity.SettingsActivity;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Model.NightModeTimings;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Model.ReminderTiming;
@@ -47,6 +48,8 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
         notificationIntent.addCategory("android.intent.category.DEFAULT");
         mBroadCastPendingIntent = PendingIntent.getBroadcast(mContext,
                 Constants.REQUEST_CODE, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        MobileAds.initialize(mContext, "ca-app-pub-8786806562583765~2726473535");
     }
 
     public static Context getAppContext() {

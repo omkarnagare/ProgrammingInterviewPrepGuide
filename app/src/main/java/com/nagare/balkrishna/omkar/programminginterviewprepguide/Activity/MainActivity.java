@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        ProgrammingInterviewPrepGuideApp.startNotificationServiceBasedOnPreference();
+        ProgrammingInterviewPrepGuideApp.setUpAlarmBasedOnPreference();
 
         loadDefaultPreferenceValues();
 

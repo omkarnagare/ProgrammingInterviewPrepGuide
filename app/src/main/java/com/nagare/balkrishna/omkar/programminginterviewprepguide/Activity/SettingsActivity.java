@@ -1,8 +1,11 @@
 package com.nagare.balkrishna.omkar.programminginterviewprepguide.Activity;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -25,6 +28,7 @@ import com.nagare.balkrishna.omkar.programminginterviewprepguide.Application.Pro
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Model.NightModeTimings;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Model.ReminderTiming;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.R;
+import com.nagare.balkrishna.omkar.programminginterviewprepguide.Utils.Constants;
 
 import java.util.Calendar;
 import java.util.List;
@@ -190,7 +194,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             // Launch Time Picker Dialog
             TimePickerDialog timePickerTillDialog = new TimePickerDialog(getActivity(),
-                    ProgrammingInterviewPrepGuideApp.getTimePickerThemeBasedOnPreferences(),
+                    ProgrammingInterviewPrepGuideApp.getAlertDialogueThemeBasedOnPreferences(),
                     new TimePickerDialog.OnTimeSetListener() {
 
                         @Override
@@ -230,7 +234,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             // Launch Time Picker Dialog
             TimePickerDialog timePickerFromDialog = new TimePickerDialog(getActivity(),
-                    ProgrammingInterviewPrepGuideApp.getTimePickerThemeBasedOnPreferences(),
+                    ProgrammingInterviewPrepGuideApp.getAlertDialogueThemeBasedOnPreferences(),
                     new TimePickerDialog.OnTimeSetListener() {
 
                         @Override
@@ -248,7 +252,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                             // Launch Time Picker Dialog
                             TimePickerDialog timePickerTillDialog = new TimePickerDialog(getActivity(),
-                                    ProgrammingInterviewPrepGuideApp.getTimePickerThemeBasedOnPreferences(),
+                                    ProgrammingInterviewPrepGuideApp.getAlertDialogueThemeBasedOnPreferences(),
                                     new TimePickerDialog.OnTimeSetListener() {
 
                                         @Override
@@ -397,11 +401,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                         if (checkBoxPreference.isChecked()) {
                             checkBoxPreference.setSummary("Reminder Activated");
+
+                            if(!ProgrammingInterviewPrepGuideApp.isAutoStartRedirectDialogueShown()) {
+                                redirectToSettingsPage();
+                            }
+
                         } else {
                             checkBoxPreference.setSummary("Remind me everyday to read questions");
+                            ProgrammingInterviewPrepGuideApp.setAutoStartRedirectDialogueShown(false);
                         }
-                        ProgrammingInterviewPrepGuideApp.stopNotificationService();
-                        ProgrammingInterviewPrepGuideApp.startNotificationServiceBasedOnPreference();
+                        ProgrammingInterviewPrepGuideApp.setUpAlarmBasedOnPreference();
                         break;
                     default:
 
@@ -418,16 +427,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                         NightModeTimings nightModeTimings = ProgrammingInterviewPrepGuideApp.getNightModeTimings();
 
-                        int startHour = nightModeTimings.getStartHour() % 12;
-                        int startMinute = nightModeTimings.getStartMinute();
-                        String startAMPM = (nightModeTimings.getStartHour() / 12) > 0 ? "PM" : "AM";
-
-                        int endHour = nightModeTimings.getEndHour() % 12;
-                        int endMinute = nightModeTimings.getEndMinute();
-                        String endAMPM = (nightModeTimings.getEndHour() / 12) > 0 ? "PM" : "AM";
-
-                        preference.setSummary("From " + startHour + ":" + startMinute + " " + startAMPM
-                                + " To " + endHour + ":" + endMinute + " " + endAMPM);
+                        preference.setSummary("From " + printTime(nightModeTimings.getStartHour(), nightModeTimings.getStartMinute())
+                                + " To " + printTime(nightModeTimings.getEndHour(), nightModeTimings.getEndMinute()));
                         ProgrammingInterviewPrepGuideApp.changeDayNightModeFromPreferences(getActivity());
                         break;
 
@@ -435,19 +436,60 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                         ReminderTiming reminderTiming = ProgrammingInterviewPrepGuideApp.getReminderTiming();
 
-                        int hour = reminderTiming.getHour() % 12;
-                        int minute = reminderTiming.getMinute();
-                        String AMPM = (reminderTiming.getHour() / 12) > 0 ? "PM" : "AM";
-
-                        preference.setSummary("Remind me everyday at " + hour + ":" + minute + " " + AMPM);
-                        ProgrammingInterviewPrepGuideApp.stopNotificationService();
-                        ProgrammingInterviewPrepGuideApp.startNotificationServiceBasedOnPreference();
+                        preference.setSummary("Remind me everyday at " + printTime(reminderTiming.getHour(), reminderTiming.getMinute()));
+                        ProgrammingInterviewPrepGuideApp.setUpAlarmBasedOnPreference();
                         break;
                     default:
 
                 }
 
             }
+        }
+
+        public String printTime(int hour, int minute){
+            String AMPM = (hour / 12) > 0 ? "PM" : "AM";
+            return String.format("%02d", hour%12)+":"+String.format("%02d", minute)+" "+AMPM;
+        }
+
+        private void redirectToSettingsPage() {
+
+            if (android.os.Build.MANUFACTURER.equalsIgnoreCase(Constants.XIAOMI)) {
+
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(getActivity(),
+                            ProgrammingInterviewPrepGuideApp.getAlertDialogueThemeBasedOnPreferences());
+                } else {
+                    builder = new AlertDialog.Builder(getActivity());
+                }
+                builder.setTitle("Change Notification Settings")
+                        .setCancelable(false)
+                        .setMessage("Please enable the Autostart setting for " +
+                                "Programming Interview Prep Guide app.\n" +
+                                "Note that notifications might not work properly if Autostart setting is disabled.\n"+
+                                "Ignore if you have already enabled Autostart settings")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //this will open auto start screen where user can enable permission for your app
+                                Intent intent = new Intent();
+                                intent.setComponent(new ComponentName(Constants.AUTOSTART_SETTING_PACKAGE,
+                                        Constants.AUTOSTART_SETTING_ACTIVITY));
+                                startActivity(intent);
+                                ProgrammingInterviewPrepGuideApp.setAutoStartRedirectDialogueShown(true);
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                ProgrammingInterviewPrepGuideApp.setAutoStartRedirectDialogueShown(true);
+                                dialog.dismiss();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
+            }
+
         }
 
 

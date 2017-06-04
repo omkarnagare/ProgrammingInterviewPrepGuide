@@ -1,13 +1,15 @@
 package com.nagare.balkrishna.omkar.programminginterviewprepguide.Application;
 
 import android.app.Activity;
-import android.app.ActivityManager;
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,6 +31,8 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
     private static SharedPreferences mSharedPreferences = null;
     private static SharedPreferences mSettingPreferences = null;
     private static final String TAG = "ProgrammingInterviewApp";
+    private static AlarmManager mAlarmManager = null;
+    private static PendingIntent mBroadCastPendingIntent = null;
 
     @Override
     public void onCreate() {
@@ -37,6 +41,12 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
         mContext = getApplicationContext();
         mSharedPreferences = mContext.getSharedPreferences(Constants.PROGRAMMING_INTERVIEW_PREP_GUIDE_APP_PREF, MODE_PRIVATE);
         mSettingPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mAlarmManager = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
+
+        Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
+        notificationIntent.addCategory("android.intent.category.DEFAULT");
+        mBroadCastPendingIntent = PendingIntent.getBroadcast(mContext,
+                Constants.REQUEST_CODE, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     public static Context getAppContext() {
@@ -70,7 +80,7 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
 
     }
 
-    public static int getTimePickerThemeBasedOnPreferences() {
+    public static int getAlertDialogueThemeBasedOnPreferences() {
 
         int mTimePickerThemeId;
         if (mSharedPreferences.contains(Constants.PREF_TIME_PICKER_THEME_ID)) {
@@ -176,29 +186,48 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
 
     }
 
-    public static void startNotificationServiceBasedOnPreference() {
-
-        if (!ProgrammingInterviewPrepGuideApp.isMyServiceRunning(mContext, NotificationService.class)) {
-            mContext.startService(new Intent(mContext,
-                    NotificationService.class));
-        }
-
+    public static boolean isAutoStartRedirectDialogueShown(){
+        return mSharedPreferences.getBoolean(Constants.PREF_AUTOSTART_SETTING_SET_BY_USER, false);
     }
 
-    public static void stopNotificationService() {
+    public static void setAutoStartRedirectDialogueShown(boolean isShown){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
 
-        mContext.stopService(new Intent(mContext,
-                NotificationService.class));
+        editor.putBoolean(Constants.PREF_AUTOSTART_SETTING_SET_BY_USER, isShown);
 
+        editor.commit();
     }
 
-    public static boolean isMyServiceRunning(Context context, Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
+    public static void setUpAlarmBasedOnPreference() {
+
+        ReminderTiming reminderTiming = ProgrammingInterviewPrepGuideApp.getReminderTiming();
+
+        if(reminderTiming.isEnabled()) {
+
+            Calendar alarmStartTime = Calendar.getInstance();
+            Calendar now = Calendar.getInstance();
+            alarmStartTime.set(Calendar.HOUR_OF_DAY, reminderTiming.getHour());
+            alarmStartTime.set(Calendar.MINUTE, reminderTiming.getMinute());
+            alarmStartTime.set(Calendar.SECOND, 0);
+
+            if (now.after(alarmStartTime)) {
+
+                Log.d(TAG, "setUpAlarmBasedOnPreference: Adding a day");
+                alarmStartTime.add(Calendar.DATE, 1);
+
             }
+
+            mAlarmManager.cancel(mBroadCastPendingIntent);
+            mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                    alarmStartTime.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY, mBroadCastPendingIntent);
+
+        }else{
+
+            Log.d(TAG, "setUpAlarmBasedOnPreference: reminder is disabled");
+
         }
-        return false;
+
     }
+
 }

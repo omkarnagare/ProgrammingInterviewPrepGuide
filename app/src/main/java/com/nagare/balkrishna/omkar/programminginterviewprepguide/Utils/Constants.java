@@ -19,15 +19,19 @@ public class Constants {
     public static final String PREF_NIGHT_MODE_END_MINUTE = "NightModeEndMinute";
     public static final String PREF_REMINDER_START_HOUR = "ReminderStartHour";
     public static final String PREF_REMINDER_START_MINUTE = "ReminderStartMinute";
+    public static final String PREF_AUTOSTART_SETTING_SET_BY_USER = "AutoStartSettings";
 
     public static final int GRID_SPACING = 20;
     public static final int GRID_LEFT_PADDING = 50;
     public static final int GRID_BOTTOM_PADDING = 10;
     public static final int GRID_TOP_PADDING = 30;
     public static final int GRID_RIGHT_PADDING = 50;
-    public static final long DAILY = 60 * 60 * 24;
-    public static final int REQUEST_CODE = 0;
-    public static final String  INTENT_FOR_SERVICE = "com.nagare.balkrishna.omkar.programminginterviewprepguide.notificationservice";
+    public static final int REQUEST_CODE = 100;
+    public static final int NOTIFICATION_ID = 0;
+    public static final int REQUEST_CODE_NOTIFICATION = 0;
+    public static final String XIAOMI = "Xiaomi";
+    public static final String AUTOSTART_SETTING_PACKAGE = "com.miui.securitycenter";
+    public static final String AUTOSTART_SETTING_ACTIVITY = "com.miui.permcenter.autostart.AutoStartManagementActivity";
     public static int GRID_SIZE = 100;
 
     public static int[] COLORS = {Color.parseColor("#F44336"),

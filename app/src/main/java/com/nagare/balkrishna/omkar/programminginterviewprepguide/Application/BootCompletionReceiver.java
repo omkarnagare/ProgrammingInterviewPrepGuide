@@ -16,11 +16,9 @@ public class BootCompletionReceiver extends BroadcastReceiver
     void onReceive(Context context,
                    Intent intent)
     {
-        if(!ProgrammingInterviewPrepGuideApp.isMyServiceRunning(context, NotificationService.class))
-        {
-            context.startService(new Intent(context,
-                    NotificationService.class));
-        }
+
+        ProgrammingInterviewPrepGuideApp.setUpAlarmBasedOnPreference();
+
     }
 
 }

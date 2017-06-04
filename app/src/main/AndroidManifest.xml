@@ -25,9 +25,13 @@
         </activity>
         <activity android:name=".Activity.SettingsActivity" />
 
-        <service
-            android:name=".Application.NotificationService"
-            android:exported="false" />
+        <receiver android:name=".Application.AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
 
         <receiver
             android:name=".Application.BootCompletionReceiver">
@@ -35,7 +39,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="com.nagare.balkrishna.omkar.programminginterviewprepguide.notificationservice" />
             </intent-filter>
 
         </receiver>

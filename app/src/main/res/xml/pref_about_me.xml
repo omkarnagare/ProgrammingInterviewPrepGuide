@@ -26,6 +26,7 @@
 
     <Preference
         android:key="@string/key_rate_app"
+        android:summary="@string/rate_app_description"
         android:title="@string/rate_us_header">
     </Preference>
 

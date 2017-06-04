@@ -3,6 +3,7 @@ package com.nagare.balkrishna.omkar.programminginterviewprepguide.Activity;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,25 +11,30 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
+import android.preference.RingtonePreference;
 import android.support.v7.app.ActionBar;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Application.ProgrammingInterviewPrepGuideApp;
+import com.nagare.balkrishna.omkar.programminginterviewprepguide.BuildConfig;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Model.NightModeTimings;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Model.ReminderTiming;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.R;
 import com.nagare.balkrishna.omkar.programminginterviewprepguide.Utils.Constants;
+import com.nagare.balkrishna.omkar.programminginterviewprepguide.View.AboutMeDialog;
 
 import java.util.Calendar;
 import java.util.List;
@@ -47,6 +53,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public static final String KEY_FEEDBACK = "send_us_feedback";
     public static final String KEY_RATE_APP = "rate_app";
     public static final String KEY_ABOUT_ME = "about_me";
+    public static final String KEY_ENABLE_SOUND = "enable_notifications_sound";
+    public static final String KEY_SOUND = "notification_ringtone";
+    public static final String KEY_ENABLE_VIBRATION = "enable_vibration";
 
     /**
      * Helper method to determine if the device has an extra-large screen. For
@@ -300,8 +309,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Programming Interview Prep Guide");
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"omtechnologies.apps@gmail.com"});
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "\n\n----------------------------------\n Device OS: Android \n Device OS version: " +
+                            Build.VERSION.RELEASE + "\n App Version: " + BuildConfig.VERSION_NAME+"-"+ BuildConfig.VERSION_CODE + "\n Device Brand: " + Build.BRAND +
+                            "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER);
                     emailIntent.setType("message/rfc822");
-                    startActivity(Intent.createChooser(emailIntent, "Send Feedback Via.."));
+                    startActivity(Intent.createChooser(emailIntent, "Send Feedback Email Via.."));
+//                    startActivity(emailIntent);
 
                     return true;
                 }
@@ -312,6 +325,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
 
+                    launchGooglePlayPageForApp();
                     return true;
                 }
             });
@@ -321,9 +335,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
 
+                    AboutMeDialog aboutMeDialog = new AboutMeDialog(getActivity());
+                    aboutMeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    aboutMeDialog.show();
                     return true;
                 }
             });
+        }
+
+        private void launchGooglePlayPageForApp() {
+            Uri uri = Uri.parse("market://details?id=" + getActivity().getPackageName());
+            Intent myAppLinkToMarket = new Intent(Intent.ACTION_VIEW, uri);
+            try {
+                startActivity(myAppLinkToMarket);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(getActivity(), " Unable to open Google Play page", Toast.LENGTH_LONG).show();
+            }
         }
 
         private void updateSummaryFromPreferences() {
@@ -412,13 +439,35 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         }
                         ProgrammingInterviewPrepGuideApp.setUpAlarmBasedOnPreference();
                         break;
+                    case KEY_ENABLE_SOUND:
+
+                        if (checkBoxPreference.isChecked()) {
+                            checkBoxPreference.setSummary("Sound Enabled for Notification");
+                        } else {
+                            checkBoxPreference.setSummary("Enable Sound for Notification");
+                        }
+                        break;
+
+                    case KEY_ENABLE_VIBRATION:
+
+                        if (checkBoxPreference.isChecked()) {
+                            checkBoxPreference.setSummary("Vibration Activated for Notification");
+                        } else {
+                            checkBoxPreference.setSummary("Enable Vibration for Notification");
+                        }
+                        break;
                     default:
 
                 }
                 return;
-            } else if (preference instanceof EditTextPreference) {
+            /*} else if (preference instanceof EditTextPreference) {
+
                 EditTextPreference editTextPreference = (EditTextPreference) preference;
-                preference.setSummary(editTextPreference.getText());
+              */
+            } else if(preference instanceof RingtonePreference){
+
+                RingtonePreference ringtonePreference = (RingtonePreference)preference;
+
             } else {
 
                 switch (key) {

@@ -224,6 +224,7 @@ public class ProgrammingInterviewPrepGuideApp extends Application {
 
         }else{
 
+            mAlarmManager.cancel(mBroadCastPendingIntent);
             Log.d(TAG, "setUpAlarmBasedOnPreference: reminder is disabled");
 
         }

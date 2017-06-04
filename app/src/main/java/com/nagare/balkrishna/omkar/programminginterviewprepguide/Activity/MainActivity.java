@@ -180,11 +180,18 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_themes:
                 chooseThemeColor();
                 break;
+            case R.id.action_remove_ads:
+                removeAdsByInAppPurchase();
+                break;
             default:
                 Log.d(TAG, "onOptionsItemSelected: No action defined");
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void removeAdsByInAppPurchase() {
+
     }
 
     private void startSettingsActivity() {

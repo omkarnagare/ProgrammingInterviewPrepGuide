@@ -33,4 +33,5 @@
     <string name="enable_vibration_description">Vibration Activated for Notification</string>
     <string name="rate_app_description">Love using the app!!. Please rate us on PlayStore</string>
     <string name="banner_ad_unit_id">ca-app-pub-8786806562583765/8633406334</string>
+    <string name="remove_ads">Remove Ads</string>
 </resources>
